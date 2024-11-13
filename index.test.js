@@ -6,7 +6,7 @@ const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals');
 
 const request = require("supertest");
 const app = require("./src/app");
-const  {Musician}  = require("./models/index.js");
+const  {Musician,Band}  = require("./models/index.js");
 const syncSeed = require("./seed.js");
 let restQuantity;
 
@@ -71,6 +71,24 @@ beforeAll(async() =>{
         const users = await Musician.findAll({});
         expect(users.length).toEqual(restQuantity);
         expect(users[0].id).not.toEqual(1)
+    });
+    test("should return 200 on get" , async()=>{
+        const response = await request(app).get('/bands');
+        expect(response.statusCode).toEqual(200);
+    });
+    test("should return all Bands" , async()=>{
+        const response = await request(app).get('/bands');
+        expect(response.body[0].name).toBe('The Beatles');
+    });
+    test("should return correct Bands" , async()=>{
+        const response = await request(app).get('/bands/1');
+        expect(response.body).toEqual(
+            expect.objectContaining({
+            id:1,
+            name: 'The Beatles',
+            genre: 'Rock'
+            })
+        )
     });
 
 
