@@ -90,5 +90,17 @@ beforeAll(async() =>{
             })
         )
     });
+    test("should throw an error when we don't provide a name field" , async()=>{
+        const response = await request(app)
+        .post('/musicians')
+        .send({instrument:'violon'})
+        expect(response.body.error).toBeDefined();
+    });
+    test("should throw an error when we don't provide an instrument field" , async()=>{
+        const response = await request(app)
+        .post('/musicians')
+        .send({name:'Cleo'})
+        expect(response.body.error).toBeDefined();
+    });
 
 
