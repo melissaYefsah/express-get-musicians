@@ -102,5 +102,17 @@ beforeAll(async() =>{
         .send({name:'Cleo'})
         expect(response.body.error).toBeDefined();
     });
+    test("should throw an error when the length is less than 2" , async()=>{
+        const response = await request(app)
+        .post('/musicians')
+        .send({name:'C',instrument:'violon'})
+        expect(response.body.error).toBeDefined();
+    });
+    test("should throw an error when the length is more than 20" , async()=>{
+        const response = await request(app)
+        .post('/musicians')
+        .send({name:'mmmmmmmmmmmmmmmmmmmmmmmm',instrument:'violon'})
+        expect(response.body.error).toBeDefined();
+    });
 
 
